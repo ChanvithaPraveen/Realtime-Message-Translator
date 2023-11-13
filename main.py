@@ -59,6 +59,34 @@ hide_streamlit_style = """
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
+# Add a nice background color
+page_bg_img = '''
+<style>
+[data-testid="stAppViewContainer"] {
+    background-image: url("https://images.unsplash.com/photo-1620121692029-d088224ddc74?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+    background-size: cover;
+}
+[data-testid="stHeader"] {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+[data-testid="stToolbar"] {
+    right: 2rem;
+}
+</style>
+'''
+
+st.markdown(page_bg_img, unsafe_allow_html=True)
+
+# Mapping dictionary for language codes to names
+language_names = {
+    "en": "English",
+    "es": "Spanish",
+    "fr": "French",
+    "si": "Sinhala",
+    "ta": "Tamil",
+}
+
 # Define a simple chat storage
 chat_log = []
 
@@ -79,11 +107,11 @@ with col2:
 
 # Language selection for sender
 with col1:
-    sender_language = st.selectbox("Select Your Language:", ["en", "es", "fr"])
+    sender_language = st.selectbox("Select Your Language:", list(language_names.values()))
 
 # Language selection for receiver
 with col2:
-    receiver_language = st.selectbox("Select Receiver's Language:", ["en", "es", "fr"])
+    receiver_language = st.selectbox("Select Receiver's Language:", list(language_names.values()))
 
 # User message input for sender
 with col1:
@@ -129,5 +157,112 @@ with col2:
             st.text(f"You (Receiver): {chat['user']} (in {receiver_language})")
             st.text(f"Sender: {chat['translation']} (in {sender_language})")
 
+
+
+#
+# import streamlit as st
+# import requests
+#
+# # Mapping dictionary for language codes to names
+# language_names = {
+#     "en": "English",
+#     "es": "Spanish",
+#     "fr": "French",
+#     "si": "Sinhala",
+#     "ta": "Tamil",
+# }
+#
+# hide_streamlit_style = """
+# <style>
+# #MainMenu {visibility: hidden;}
+# footer {visibility: hidden;}
+# </style>
+# """
+# st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+#
+# # Add a nice background color
+# page_bg_img = '''
+# <style>
+# [data-testid="stAppViewContainer"] {
+#     background-image: url("https://images.unsplash.com/photo-1620121692029-d088224ddc74?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+#     background-size: cover;
+# }
+# [data-testid="stHeader"] {
+#     background-color: rgba(0, 0, 0, 0);
+# }
+# </style>
+# '''
+#
+# st.markdown(page_bg_img, unsafe_allow_html=True)
+#
+# # Define a simple chat storage
+# chat_log = []
+#
+# # Translation API (MyMemory) endpoint
+# translation_url = "https://mymemory.translated.net/api/get"
+#
+# # Streamlit app title
+# st.title("Chat App with Translation")
+#
+# # Create a two-column layout
+# col1, col2 = st.columns(2)
+#
+# with col1:
+#     st.subheader("Sender")
+#
+# with col2:
+#     st.subheader("Receiver")
+#
+# # Language selection for sender
+# with col1:
+#     sender_language = st.selectbox("Select Your Language:", list(language_names.values()))
+#
+# # Language selection for receiver
+# with col2:
+#     receiver_language = st.selectbox("Select Receiver's Language:", list(language_names.values()))
+#
+# # User message input for sender
+# with col1:
+#     user_message = st.text_area("Your Message (Sender):")
+#
+# with col1:
+#     # Translate user message for sender and display in receiver's text box
+#     if st.button("Send (Sender)"):
+#         if user_message:
+#             response = requests.get(
+#                 translation_url, params={"q": user_message, "langpair": f"{sender_language}|{receiver_language}"}
+#             )
+#             translation = response.json().get("responseData", {}).get("translatedText", user_message)
+#
+#             chat_log.append({"user": user_message, "translation": translation, "sender": True})
+#
+# # Display chat log for sender in the left column
+# with col1:
+#     for chat in chat_log:
+#         if chat["sender"]:
+#             st.text(f"You (Sender): {chat['user']} (in {language_names.get(sender_language)})")
+#             st.text(f"Recipient: {chat['translation']} (in {language_names.get(receiver_language)})")
+#
+# # Reply to sender's message for receiver
+# with col2:
+#     user_message_receiver = st.text_area("Your Reply (Receiver):")
+#
+# with col2:
+#     # Translate user message for receiver and display in sender's text box
+#     if st.button("Send (Receiver)"):
+#         if user_message_receiver:
+#             response = requests.get(
+#                 translation_url, params={"q": user_message_receiver, "langpair": f"{receiver_language}|{sender_language}"}
+#             )
+#             translation = response.json().get("responseData", {}).get("translatedText", user_message_receiver)
+#
+#             chat_log.append({"user": user_message_receiver, "translation": translation, "sender": False})
+#
+# # Display chat log for receiver in the right column
+# with col2:
+#     for chat in chat_log:
+#         if not chat["sender"]:
+#             st.text(f"You (Receiver): {chat['user']} (in {language_names.get(receiver_language)})")
+#             st.text(f"Sender: {chat['translation']} (in {language_names.get(sender_language)})")
 
 
