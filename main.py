@@ -55,7 +55,6 @@ from firebase_admin import db, credentials
 
 hide_streamlit_style = """
             <style>
-            #MainMenu {visibility: hidden;}
             footer {visibility: hidden;}
             </style>
             """
@@ -95,9 +94,9 @@ cred = credentials.Certificate("credentials.json")
 if 'flag' not in st.session_state:
     # Run this block only once
     st.session_state.flag = True
-    firebase_admin.initialize_app(cred, {
-        'databaseURL': 'https://react-firebase-chat-fe637-default-rtdb.firebaseio.com/'
-    })
+    # firebase_admin.initialize_app(cred, {
+    #     'databaseURL': 'https://react-firebase-chat-fe637-default-rtdb.firebaseio.com/'
+    # })
 
 
 
@@ -111,7 +110,7 @@ translation_url = "https://mymemory.translated.net/api/get"
 # Streamlit app title
 st.title("Chat App with Translation")
 
-name = st.text_input("Enter Your Name:")
+name = st.text_input("Enter Your Name:", "Unknown")
 
 # Create a two-column layout
 col1, col2 = st.columns(2)
@@ -130,9 +129,12 @@ with col1:
 with col2:
     receiver_language = st.selectbox("Select Receiver's Language:", list(language_names.values()))
 
+    if sender_language == receiver_language:
+        st.warning("Sender and Receiver languages are same.")
+
 # User message input for sender
 with col1:
-    user_message = st.text_area("Your Message (Sender):", height=300)
+    user_message = st.text_area("Your Message (Sender):", "Sample", height=300)
 
 translation = ""
 
@@ -167,6 +169,13 @@ with col1:
 #             st.text(f"Recipient: {chat['translation']} (in {receiver_language})")
 
 data = db.reference("/messages").get()
+
+
+# Define a function to clear all messages from the database
+def clear_messages():
+    ref = db.reference('/messages')
+    ref.delete()
+
 # Reply to sender's message for receiver
 with col2:
     # Check if messages is not empty and is a dictionary
@@ -177,9 +186,14 @@ with col2:
 
         # Display in a Streamlit text area
         st.text_area("Chat Pool", formatted_messages, height=300)
+
+        # Button to clear all messages
+        if st.button("Clear All Messages"):
+            clear_messages()
+            st.success("All messages cleared!")
+
     else:
         st.warning("No messages found or data is not in the expected format.")
-
 
 #
 # with col2:
