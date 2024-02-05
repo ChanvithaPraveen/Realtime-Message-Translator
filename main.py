@@ -97,10 +97,9 @@ if 'flag' not in st.session_state:
     # Check if Firebase app is already initialized
     if not firebase_admin._apps:
         # Firebase app is not initialized, so initialize it
-
-
-
-
+        firebase_admin.initialize_app(cred, {
+            'databaseURL': 'https://react-firebase-chat-fe637-default-rtdb.firebaseio.com/'
+        })
 
 # Define a simple chat storage
 chat_log = []
