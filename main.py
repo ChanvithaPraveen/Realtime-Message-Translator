@@ -97,9 +97,7 @@ if 'flag' not in st.session_state:
     # Check if Firebase app is already initialized
     if not firebase_admin._apps:
         # Firebase app is not initialized, so initialize it
-        firebase_admin.initialize_app(cred, {
-            'databaseURL': 'https://react-firebase-chat-fe637-default-rtdb.firebaseio.com/'
-        })
+
 
 
 
@@ -111,7 +109,7 @@ chat_log = []
 translation_url = "https://mymemory.translated.net/api/get"
 
 # Streamlit app title
-st.title("Chat App with Translation")
+st.title("Chat Web with Translation")
 
 name = st.text_input("Enter Your Name:", "Unknown")
 
