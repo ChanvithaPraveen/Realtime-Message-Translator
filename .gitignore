@@ -1,5 +1,5 @@
 /venv/
 /credentials.json
 /credentials.toml
-
+/.env
 

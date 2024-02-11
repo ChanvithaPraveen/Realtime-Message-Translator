@@ -4,6 +4,13 @@ import streamlit as st
 import requests
 import firebase_admin
 from firebase_admin import db, credentials
+import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
+databaseurl = os.getenv("FIREBASE_DATABASE_URL")
 
 hide_streamlit_style = """
             <style>
@@ -50,7 +57,7 @@ if 'flag' not in st.session_state:
     if not firebase_admin._apps:
         # Firebase app is not initialized, so initialize it
         firebase_admin.initialize_app(cred, {
-            'databaseURL': 'https://react-firebase-chat-fe637-default-rtdb.firebaseio.com/'
+            'databaseURL': databaseurl
         })
 
 # Define a simple chat storage
